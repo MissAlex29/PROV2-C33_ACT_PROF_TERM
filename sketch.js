@@ -9,8 +9,7 @@ const Composite = Matter.Composite;
 
 let engine;
 let world;
-var rope,rope2,rope3;
-var fruit,ground;
+var rope,fruit,ground;
 var fruit_con;
 var fruit_con_2;
 
@@ -29,7 +28,6 @@ var sad_sound;
 var eating_sound;
 var air; 
 
-//Variable para el soplador
 var blower;
 var mute_btn;
 
@@ -52,6 +50,7 @@ function preload(){
   blink.playing = true;
   eat.playing = true;
   sad.playing = true;
+  
   //evitamos que la animación se resprodusca una y otra vez 
   sad.looping= false;
   eat.looping = false; 
@@ -68,29 +67,29 @@ function setup() {
   engine = Engine.create();
   world = engine.world;
 
-  //btn 1
+  //Botón para cortar la cuerda 1
   button = createImg('cut_btn.png');
   button.position(20,30);
   button.size(50,50);
   button.mouseClicked(drop);
 
-  //btn 2
-   button2 = createImg('cut_btn.png');
-   button2.position(330,35);
-   button2.size(60,60);
-   button2.mouseClicked(drop2);
- 
-  //btn3
-   button3 = createImg('cut_btn.png');
-   button3.position(360,200);
-   button3.size(60,60);
-   button3.mouseClicked(drop3);
+  //Botón para cortar la cuerda 2
+  button2 = createImg('cut_btn.png');
+  button2.position(200,25 );
+  button2.size(50,50);
+  button2.mouseClicked(drop2);
+
+  //Botón para cortar la cuerda 3
+  button3 = createImg('cut_btn.png');
+  button3.position(320,120);
+  button3.size(50,50);
+  button3.mouseClicked(drop3);
 
   //Botón para soplador
   //blower = createImg("balloon.png");
-  //blower.position(60,200);
-  //blower.size(150,100);
-  //blower.mouseClicked(airblow);
+  //blower.position(10,250);
+ // blower.size(150,100);
+ // blower.mouseClicked(airblow);
 
   //Botón para el mute 
   mute_btn = createImg("mute.png");
@@ -99,10 +98,9 @@ function setup() {
   mute_btn.mouseClicked(mute);
 
   //Guardar molde de cuerda en variable 
-  rope = new Rope(9,{x:40,y:30});
-  rope2 = new Rope(7, {x:370,y:40});
-  rope3 = new Rope(4,{x:400,y:225});
-
+  rope = new Rope(7,{x:20,y:30});
+  rope2 = new Rope(8,{x:220,y:20});
+  rope3 = new Rope(8,{x:345,y:120});
   //Guardar molde del suelo en variable 
   ground = new Ground(200,690,600,20);
 
@@ -112,7 +110,7 @@ function setup() {
   sad.frameDelay = 20;
 
   //Crear objeto del conejito
-  bunny = createSprite(170,620,100,100);
+  bunny = createSprite(420,620,100,100);
   bunny.scale = 0.2;
 
   //Agregar animación a nuestro Sprite con etiqueta
@@ -132,6 +130,7 @@ function setup() {
   fruit_con2 = new Link(rope2,fruit);
   fruit_con3 = new Link(rope3,fruit);
 
+
   rectMode(CENTER);
   ellipseMode(RADIUS);
   imageMode(CENTER);
@@ -143,17 +142,20 @@ function draw()
   background(51);
   image(bg_img,width/2,height/2,490,690);
 
+  push();
+  imageMode(CENTER);
   //Solo queremos mostrar la fruta si su cuerpo existe
   if(fruit!=null){
     image(food,fruit.position.x,fruit.position.y,70,70);
   }
+  pop();
 
   //Mostrar la cuerda
   rope.display();
   rope2.display();
   rope3.display();
-
   Engine.update(engine);
+
   //Mostar suelo
   ground.display();
   
@@ -183,7 +185,6 @@ function drop(){
   fruit_con = null; 
 }
 
-//Función que corta la fruta
 function drop2(){
   cut_sound.play();
   rope2.break();
@@ -191,13 +192,13 @@ function drop2(){
   fruit_con2 = null; 
 }
 
-//Función que corta la fruta
 function drop3(){
   cut_sound.play();
   rope3.break();
   fruit_con3.dettach();
   fruit_con3 = null; 
 }
+
 
 //Función para detectar la colisión
 function collide(body,sprite){
