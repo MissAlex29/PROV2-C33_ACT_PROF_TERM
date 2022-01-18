@@ -61,7 +61,7 @@ function setup() {
   frameRate(80);
 
   //Sonido de fondo
-  //bk_sound.play();
+  bk_sound.play();
   bk_sound.setVolume(0.5);
 
   engine = Engine.create();
