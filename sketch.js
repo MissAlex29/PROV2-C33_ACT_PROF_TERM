@@ -61,7 +61,7 @@ function setup() {
   frameRate(80);
 
   //Sonido de fondo
-  bk_sound.play();
+  //bk_sound.play();
   bk_sound.setVolume(0.5);
 
   engine = Engine.create();
@@ -86,10 +86,10 @@ function setup() {
   button3.mouseClicked(drop3);
 
   //Botón para soplador
-  //blower = createImg("balloon.png");
-  //blower.position(10,250);
- // blower.size(150,100);
- // blower.mouseClicked(airblow);
+  globe = createImg("blower.png");
+  globe.position(10,240);
+  globe.size(50,50);
+  globe.mouseClicked(airblow);
 
   //Botón para el mute 
   mute_btn = createImg("mute.png");
@@ -101,9 +101,10 @@ function setup() {
   rope = new Rope(7,{x:20,y:30});
   rope2 = new Rope(8,{x:220,y:20});
   rope3 = new Rope(8,{x:345,y:120});
+
   //Guardar molde del suelo en variable 
   ground = new Ground(200,690,600,20);
-
+ 
   //Configuramos la velocidad de la animación. 
   blink.frameDelay = 20;
   eat.frameDelay = 20;
@@ -137,8 +138,7 @@ function setup() {
   
 }
 
-function draw() 
-{
+function draw() {
   background(51);
   image(bg_img,width/2,height/2,490,690);
 
@@ -166,12 +166,11 @@ function draw()
     bunny.changeAnimation('eating');
     eating_sound.play();
   }
-  //Condición para detectar colisión 
-  if(collide(fruit,ground.body)==true){
-    //Si colisiona con el suelo cambia de animación 
-     bunny.changeAnimation('crying');
-     sad_sound.play();//Sonido para conejito triste 
-     bk_sound.stop();//Detiene sonido de fondo 
+  if(fruit!=null && fruit.position.y>=height-50){
+    bunny.changeAnimation('crying');
+    bk_sound.stop();
+    sad_sound.play();
+    fruit=null;  
    }
 
   drawSprites();
@@ -219,6 +218,7 @@ function collide(body,sprite){
         else{
           //Regresaremos a un valor falso 
           return false;
+
         }
   }
 }
